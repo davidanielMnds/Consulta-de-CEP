@@ -1,4 +1,4 @@
-# Visualizador de CEP
+# Consulta de CEP
 
 Projeto simples em Spring Boot que consome a API pública do [ViaCEP](https://viacep.com.br) para consultar endereços a partir de um CEP, com histórico de buscas.
 
