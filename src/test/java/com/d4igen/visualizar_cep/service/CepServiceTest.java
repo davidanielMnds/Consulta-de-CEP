@@ -2,6 +2,8 @@ package com.d4igen.visualizar_cep.service;
 import com.d4igen.visualizar_cep.dto.EnderecoDTO;
 import com.d4igen.visualizar_cep.service.CepService;
 
+import exception.CepNaoEncontradoException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -44,10 +47,13 @@ class CepServiceTest {
     }
 
     @Test 
-    void naoDeveAdicionarNoHistoricoQuandoCepNaoExiste() {
+    void deveLancarExcecaoQuandoCepNaoExiste() {
+
         when(restTemplate.getForObject(anyString(), eq(EnderecoDTO.class), eq("00000000")))
         .thenReturn(new EnderecoDTO());
-        cepService.buscarCEP("00000000");
+
+        
+        assertThrows(CepNaoEncontradoException.class, () -> cepService.buscarCEP("00000000"));
         assertTrue(cepService.getHistorico().isEmpty()); 
     }
 

@@ -1,6 +1,9 @@
 package com.d4igen.visualizar_cep.service;
 
 import com.d4igen.visualizar_cep.dto.EnderecoDTO;
+
+import exception.CepNaoEncontradoException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,9 +23,10 @@ public class CepService {
   
     public EnderecoDTO buscarCEP(String cep) {
         EnderecoDTO endereco = restTemplate.getForObject(VIA_CEP_URL, EnderecoDTO.class, cep);
-        if(endereco != null && endereco.getLocalidade() != null) {
-            historico.add(endereco);
+        if(endereco == null || endereco.getLocalidade() == null) {
+            throw new CepNaoEncontradoException(cep);
         }
+        historico.add(endereco);
         return endereco;
     }
 
