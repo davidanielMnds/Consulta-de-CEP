@@ -11,9 +11,14 @@ import java.util.List;
 public class CepService {
     private List<EnderecoDTO> historico = new ArrayList<>();
     private static final String VIA_CEP_URL = "https://viacep.com.br/ws/{cep}/json/";
+    private RestTemplate restTemplate;
 
+    public CepService(RestTemplate restTemplate) {
+        this.restTemplate=restTemplate;
+    }
+
+  
     public EnderecoDTO buscarCEP(String cep) {
-        RestTemplate restTemplate = new RestTemplate();
         EnderecoDTO endereco = restTemplate.getForObject(VIA_CEP_URL, EnderecoDTO.class, cep);
         if(endereco != null && endereco.getLocalidade() != null) {
             historico.add(endereco);
