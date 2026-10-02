@@ -2,10 +2,13 @@ package com.d4igen.visualizar_cep.service;
 import com.d4igen.visualizar_cep.dto.EnderecoDTO;
 import com.d4igen.visualizar_cep.service.CepService;
 
+import exception.CepComFormatoInvalidoException;
 import exception.CepNaoEncontradoException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,6 +60,14 @@ class CepServiceTest {
         
         assertThrows(CepNaoEncontradoException.class, () -> cepService.buscarCEP("00000000"));
         assertTrue(cepService.getHistorico().isEmpty()); 
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"123", "abc", "123456789", "1234-678", "asdfghjk", ""})
+    void deveLancarExcecaoQuandoCepForInvalido(String cepInvalido) {
+
+        assertThrows(CepComFormatoInvalidoException.class, () -> cepService.buscarCEP("cepInvalido"));
+        verify(restTemplate, never()).getForObject(anyString(), eq(EnderecoDTO.class), anyString());
     }
 
 }
