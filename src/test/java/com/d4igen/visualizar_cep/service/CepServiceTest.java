@@ -12,6 +12,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,6 +72,25 @@ class CepServiceTest {
 
         assertThrows(CepComFormatoInvalidoException.class, () -> cepService.buscarCEP("cepInvalido"));
         verify(restTemplate, never()).getForObject(anyString(), eq(EnderecoDTO.class), anyString());
+    }
+
+    @Test 
+    void devePropagarErroQuandoViaCepFicarForaDoAr() {
+        when(restTemplate.getForObject(anyString(), eq(EnderecoDTO.class), eq("00000000")))
+        .thenThrow(new ResourceAccessException("fora de ar"));
+
+        assertThrows(ResourceAccessException.class, () -> cepService.buscarCEP("00000000"));
+        assertTrue(cepService.getHistorico().isEmpty());
+    }
+
+    @Test
+    void devePropagarErroQuandoViaCepRetorna5xx() {
+
+        when(restTemplate.getForObject(anyString(), eq(EnderecoDTO.class), eq("00000000")))
+        .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        assertThrows(HttpServerErrorException.class, () -> cepService.buscarCEP("00000000"));
+        assertTrue(cepService.getHistorico().isEmpty());
     }
 
 }
