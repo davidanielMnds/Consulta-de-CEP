@@ -2,8 +2,8 @@ package com.d4igen.visualizar_cep.service;
 
 import com.d4igen.visualizar_cep.dto.EnderecoDTO;
 
-import exception.CepComFormatoInvalidoException;
-import exception.CepNaoEncontradoException;
+import com.d4igen.visualizar_cep.exception.CepComFormatoInvalidoException;
+import com.d4igen.visualizar_cep.exception.CepNaoEncontradoException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

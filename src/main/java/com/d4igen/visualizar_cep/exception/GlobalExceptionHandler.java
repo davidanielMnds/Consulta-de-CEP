@@ -1,4 +1,4 @@
-package exception;
+package com.d4igen.visualizar_cep.exception;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;

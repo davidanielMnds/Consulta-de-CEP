@@ -1,4 +1,4 @@
-package exception;
+package com.d4igen.visualizar_cep.exception;
 
 import org.springframework.http.HttpStatus;
 
