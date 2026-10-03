@@ -25,11 +25,12 @@ public class CepService {
   
     public EnderecoDTO buscarCEP(String cep) {
 
-        if(!cep.matches("^\\d{8}$")) {
+        if(cep == null || !cep.matches("^\\d{8}$")) {
             throw new CepComFormatoInvalidoException(cep);
         }
 
         EnderecoDTO endereco = restTemplate.getForObject(VIA_CEP_URL, EnderecoDTO.class, cep);
+
         if(endereco == null || endereco.getLocalidade() == null) {
             throw new CepNaoEncontradoException(cep);
         }

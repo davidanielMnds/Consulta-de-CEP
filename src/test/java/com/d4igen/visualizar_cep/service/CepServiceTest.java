@@ -45,10 +45,6 @@ class CepServiceTest {
 
         EnderecoDTO resultado = cepService.buscarCEP("00000000");
 
-        System.out.println("CEP: " + dto.getCep());
-        System.out.println("Localidade: " + dto.getLocalidade());
-        System.out.println("Historico: " + cepService.getHistoricoCep());
-
         assertEquals("Belo Horizonte", resultado.getLocalidade());
         assertEquals(1, cepService.getHistorico().size());
     }
@@ -68,7 +64,7 @@ class CepServiceTest {
     @ValueSource(strings = {"123", "abc", "123456789", "1234-678", "asdfghjk", ""})
     void deveLancarExcecaoQuandoCepForInvalido(String cepInvalido) {
 
-        assertThrows(CepComFormatoInvalidoException.class, () -> cepService.buscarCEP("cepInvalido"));
+        assertThrows(CepComFormatoInvalidoException.class, () -> cepService.buscarCEP(cepInvalido));
         verify(restTemplate, never()).getForObject(anyString(), eq(EnderecoDTO.class), anyString());
     }
 
