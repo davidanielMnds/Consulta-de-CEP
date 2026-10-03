@@ -1,6 +1,7 @@
 package com.d4igen.visualizar_cep.exception;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getStatus()).body(e.getMessage());
     }
 
-    @ExceptionHandler ({ResourceAccessException.class, HttpServerErrorException.class})
+    @ExceptionHandler (HttpClientErrorException.class)
     public ResponseEntity<String> handleViaCepIndisponivel(RuntimeException e) {
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
