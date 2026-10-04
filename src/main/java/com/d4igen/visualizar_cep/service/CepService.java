@@ -25,6 +25,8 @@ public class CepService {
   
     public EnderecoDTO buscarCEP(String cep) {
 
+        if(cep !=null) { cep = cep.replace("-", ""); }
+
         if(cep == null || !cep.matches("^\\d{8}$")) {
             throw new CepComFormatoInvalidoException(cep);
         }
