@@ -3,11 +3,11 @@ package com.d4igen.visualizar_cep.exception;
 import com.d4igen.visualizar_cep.dto.ErroDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestClientException;
 
 @RestControllerAdvice 
 public class GlobalExceptionHandler {
@@ -20,13 +20,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getStatus()).body(new ErroDTO(e.getMessage()));
     }
 
-    @ExceptionHandler (HttpClientErrorException.class)
-    public ResponseEntity<ErroDTO> handleViaCepIndisponivel(RuntimeException e) {
+    @ExceptionHandler (RestClientException.class)
+    public ResponseEntity<ErroDTO> handleViaCepIndisponivel(RestClientException e) {
 
         log.error("Falha ao consultar o ViaCEP", e);
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-        .body(new ErroDTO(e.getMessage()));
+        .body(new ErroDTO("Serviço de consulta de CEP indisponível"));
 
     }
 
