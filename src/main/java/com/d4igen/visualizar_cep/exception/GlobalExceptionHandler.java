@@ -1,5 +1,6 @@
 package com.d4igen.visualizar_cep.exception;
 
+import com.d4igen.visualizar_cep.dto.ErroDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -14,28 +15,28 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     
     @ExceptionHandler(CepException.class)
-    public ResponseEntity<String> handle(CepException e) {
+    public ResponseEntity<ErroDTO> handle(CepException e) {
 
-        return ResponseEntity.status(e.getStatus()).body(e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(new ErroDTO(e.getMessage()));
     }
 
     @ExceptionHandler (HttpClientErrorException.class)
-    public ResponseEntity<String> handleViaCepIndisponivel(RuntimeException e) {
+    public ResponseEntity<ErroDTO> handleViaCepIndisponivel(RuntimeException e) {
 
         log.error("Falha ao consultar o ViaCEP", e);
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-        .body("Serviço de consulta de CEP indisponível");
+        .body(new ErroDTO(e.getMessage()));
 
     }
 
     @ExceptionHandler(Exception.class) 
-    public ResponseEntity<String> handleGenerico(Exception e) {
+    public ResponseEntity<ErroDTO> handleGenerico(Exception e) {
 
         log.error("Erro inesperado", e);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("Erro interno");
+        .body(new ErroDTO("Erro interno"));
 
     }
 
