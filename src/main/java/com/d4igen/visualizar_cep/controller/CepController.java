@@ -14,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/cep")
 public class CepController {
-    @Autowired
+
     private CepService cepService;
+
+    public CepController(CepService cepService) {
+        this.cepService=cepService;
+    }
 
     //------------------- GET cep
     @GetMapping("/{cep}")
