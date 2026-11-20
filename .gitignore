@@ -1,10 +1,9 @@
-HELP.md
+# Java / Maven
 target/
+HELP.md
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
+# Spring Tool Suite
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +12,40 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+# Front-end (Vue / Vite)
+node_modules
+dist
+dist-ssr
+coverage
+*.local
+*.tsbuildinfo
+.eslintcache
+*.timestamp-*-*.mjs
+/front-end/cypress/videos/
+/front-end/cypress/screenshots/
+__screenshots__/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# IDEs / editores
 .idea
 *.iws
 *.iml
 *.ipr
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
+# Sistema
+.DS_Store
